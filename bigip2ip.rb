@@ -8,6 +8,12 @@
 # header = "BIGipServerPool_cla=252029120.10499.0000".split("=").last.split(".").first #=> "252029120"
 # Read All BigIP Techinques in IP encoding
 # http://support.f5.com/kb/en-us/solutions/public/6000/900/sol6917.html
+#
+# from big up to ip
+# s = 1677787402.to_s 16 # "6401010a"   << Hex
+# ss = s.scan(/.{2}/)   #=> ["64", "01", "01", "0a"]
+# sss = ss.reverse.map {|o| o.hex}.join(".")  #=> "100.1.1.10"
+#
 
 require 'optparse'
 
