@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-#cla => Dhecimal
+#cla => Decimal
 # BIGipServerPool_cla=252029120.10499.0000
 # saaf => Hex
 # BIGipServerpool_SaafFarm_4.17-24=rd4o00000000000000000000ffffc0a80411o80
