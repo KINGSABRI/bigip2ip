@@ -7,6 +7,9 @@
 # saaf => Hex
 # printf 'GET / HTTP/1.0\nHOST:saaf.domain.com\n\n' | ncat --ssl saaf.domain.com 443  | grep -i bigip
 # BIGipServerpool_SaafFarm_4.17-24=rd4o00000000000000000000ffffc0a80411o80
+# Simple parsing
+# c = "BIGipServerpool_SaafFarm_4.17-24=rd4o00000000000000000000ffffc0a80411o80"
+# c.split("f").last.split("o").first #=> c0a80411
 #
 # header = "BIGipServerPool_cla=252029120.10499.0000".split("=").last.split(".").first #=> "252029120"
 # Read All BigIP Techinques in IP encoding
@@ -16,6 +19,8 @@
 # s = 1677787402.to_s 16 # "6401010a"   << Hex
 # ss = s.scan(/.{2}/)   #=> ["64", "01", "01", "0a"]
 # sss = ss.reverse.map {|o| o.hex}.join(".")  #=> "100.1.1.10"
+#
+#
 #
 
 require 'optparse'
