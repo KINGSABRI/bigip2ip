@@ -20,6 +20,13 @@
 
 require 'optparse'
 
+class String
+  def red; colorize(self, "\e[31m"); end
+  def green; colorize(self, "\e[32m"); end
+  def bold; colorize(self, "\e[1m"); end
+  def colorize(text, color_code)  "#{color_code}#{text}\e[0m" end
+end
+
 
 class Integer
 
@@ -47,6 +54,23 @@ class Integer
 
 end
 
+#
+# List of all supported products
+# http://support.f5.com/kb/en-us/solutions/public/6000/900/sol6917.html
+#
+supported_products =
+    {
+        "BIG-IP_LTM"             => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0, 10.0.1, 10.0.0, 9.6.1, 9.6.0, 9.4.8, 9.4.7, 9.4.6, 9.4.5, 9.4.4, 9.4.3, 9.4.2, 9.4.1, 9.4.0, 9.3.1, 9.3.0, 9.2.5, 9.2.4, 9.2.3, 9.2.2, 9.2.0, 9.1.3, 9.1.2, 9.1.1, 9.1.0, 9.0.5, 9.0.4, 9.0.3, 9.0.2, 9.0.1, 9.0.0},
+        "BIG-IP_APM"             => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0},
+        "BIG-IP_ASM"             => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0, 10.0.1, 10.0.0, 9.4.8, 9.4.7, 9.4.6, 9.4.5, 9.4.4, 9.4.3, 9.4.2, 9.4.1, 9.4.0, 9.3.1, 9.3.0, 9.2.5, 9.2.4, 9.2.3, 9.2.2, 9.2.0},
+        "BIG-IP_Edge-Gateway"    => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0},
+        "BIG-IP_Link-Controller" => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0, 10.0.1, 10.0.0, 9.4.8, 9.4.7, 9.4.6, 9.4.5, 9.4.4, 9.4.3, 9.4.2, 9.4.1, 9.4.0, 9.3.1, 9.3.0, 9.2.5, 9.2.4, 9.2.3, 9.2.2},
+        "BIG-IP_PSM"             => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0, 10.0.1, 10.0.0, 9.4.8, 9.4.7, 9.4.6, 9.4.5},
+        "BIG-IP_WebAccelerator"  => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0, 10.0.1, 10.0.0, 9.4.8, 9.4.7, 9.4.6, 9.4.5, 9.4.4, 9.4.3, 9.4.2, 9.4.1, 9.4.0},
+        "BIG-IP_WOM"             => %w{11.2.1, 11.2.0, 11.1.0, 11.0.0, 10.2.4, 10.2.3, 10.2.2, 10.2.1, 10.2.0, 10.1.0, 10.0.1, 10.0.0}
+    }
+
+
 
 options = {}
 optparse = OptionParser.new do |opts|
@@ -60,8 +84,12 @@ optparse = OptionParser.new do |opts|
     options[:dot2decimal] = o
   end
 
-  opts.on("--hex2dotdecimal HEX", "Convert Hex to doted decimal format") do |o|
+  opts.on("--hex2dotdecimal HEX", "Convert Hex(non-default route domains) to doted decimal format") do |o|
     options[:hex2dotdecimal] = o
+  end
+
+  opts.on("--list", "List all supported products with its versions") do |o|
+    options[:list] = o
   end
 
   opts.on( '-h', '--help', "Display help screen\n" ) 	do
@@ -81,6 +109,12 @@ case
     puts "#{options[:decimal2dot]}".to_i.to_decimal
   when options[:hex2dotdecimal]
     puts "#{options[:hex2dotdecimal]}".hex.to_i.to_decimal_reverse
+  when options[:list]
+    puts "Product name" + "|" + "supported version"
+    supported_products.each do |prod, ver|
+      puts "[+] ".red + "#{prod}".bold.ljust(30," ") + "\n#{ver.join(", ")}".green
+    end
+    puts "\n[+] ".red + "Visit: http://support.f5.com/kb/en-us/solutions/public/6000/900/sol6917.html"
   else
     puts optparse
 end
