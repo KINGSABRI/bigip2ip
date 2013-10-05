@@ -16,7 +16,7 @@ or
 ```
 BIGipServerPool_cla=252029120.10499.0000
 ```
-that mean the headers have been encoded by F5 encoders.
+that means the headers have been encoded by F5 encoders.
 
 ```
 printf 'GET / HTTP/1.0\nHOST:domain.com\n\n' | ncat domain.com 80  | grep -i bigip
