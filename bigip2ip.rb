@@ -29,6 +29,7 @@ class String
   def red; colorize(self, "\e[31m"); end
   def green; colorize(self, "\e[32m"); end
   def bold; colorize(self, "\e[1m"); end
+  def underline; colorize(self, "\e[4m"); end
   def colorize(text, color_code)  "#{color_code}#{text}\e[0m" end
 end
 
@@ -81,25 +82,22 @@ options = {}
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: example.rb [options]  VALUE"
 
-  opts.on("--decimal2dot DECIMAL", "Convert decimal to doted format") do |o|
-    options[:decimal2dot] = o
+  opts.on('--decimal DECIMAL', 'Convert decimal to doted format') do |o|
+    options[:decimal] = o
   end
 
-  opts.on("--dot2decimal IP-ADDR", "Convert doted to decimal format") do |o|
-    options[:dot2decimal] = o
+  opts.on('--hex HEX', 'Convert Hex(non-default route domains) to doted decimal format') do |o|
+    options[:hex] = o
   end
 
-  opts.on("--hex2dotdecimal HEX", "Convert Hex(non-default route domains) to doted decimal format") do |o|
-    options[:hex2dotdecimal] = o
-  end
-
-  opts.on("--list", "List all supported products with its versions") do |o|
+  opts.on('--list', 'List all supported products with its versions') do |o|
     options[:list] = o
   end
 
-  opts.on( '-h', '--help', "Display help screen\n" ) 	do
-    puts opts
-    puts "\nExamples:\n" + "ruby bigip2ip.rb --decimal2dot 252029120"
+  opts.banner = "\nUsage:".underline + " ruby bigip2ip.rb {OPTIONS} COOKIE\n\n"
+
+  opts.on( '-h', '--help', "Display help screen\n" ) do |o|
+    options[:help] = o
   end
 
 end
@@ -110,10 +108,12 @@ ARGV
 
 case
   #-->
-  when options[:decimal2dot]
-    puts "#{options[:decimal2dot]}".to_i.to_decimal
-  when options[:hex2dotdecimal]
-    puts "#{options[:hex2dotdecimal]}".hex.to_i.to_decimal_reverse
+  when options[:decimal]
+    options[:decimal] = options[:decimal].split("=").last.split(".").first
+    puts "#{options[:decimal]}".to_i.to_decimal
+  when options[:hex]
+    options[:hex] = options[:hex].split("f").last.split("o").first
+    puts "#{options[:hex]}".hex.to_i.to_decimal_reverse
   when options[:list]
     puts "Product name" + "|" + "supported version"
     supported_products.each do |prod, ver|
@@ -122,6 +122,9 @@ case
     puts "\n[+] ".red + "Visit: http://support.f5.com/kb/en-us/solutions/public/6000/900/sol6917.html"
   else
     puts optparse
+    puts "\nExamples:".underline
+    puts "ruby bigip2ip.rb --decimal BIGipServerPool_cla=252029120.10499.0000"
+    puts "ruby bigip2ip.rb --hex BIGipServerpool_SaafFarm_4.17-24=rd4o00000000000000000000ffffc0a80411o80"
 end
 
 
