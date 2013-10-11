@@ -4,10 +4,10 @@
 #
 #=> Decimal
 # printf 'GET / HTTP/1.0\nHOST:domain.com\n\n' | ncat domain.com 80  | grep -i bigip
-# BIGipServerPool_cla=252029120.10499.0000
+# BIGipServerPool=252029120.10499.0000
 #=> Hex
-# printf 'GET / HTTP/1.0\nHOST:saaf.domain.com\n\n' | ncat --ssl saaf.domain.com 443  | grep -i bigip
-# BIGipServerpool_SaafFarm_4.17-24=rd4o00000000000000000000ffffc0a80411o80
+# printf 'GET / HTTP/1.0\nHOST:domain.com\n\n' | ncat --ssl domain.com 443  | grep -i bigip
+# BIGipServerpool_=rd4o00000000000000000000ffffc0a80411o80
 # Read All BigIP Techinques in IP encoding
 # http://support.f5.com/kb/en-us/solutions/public/6000/900/sol6917.html
 
@@ -108,14 +108,15 @@ case
   when options[:list]
     puts "Product name" + "|" + "supported version"
     supported_products.each do |prod, ver|
-      puts "[+] ".red + "#{prod}".bold.ljust(35," ") + "#{ver.join(", ")}".green
+      puts "[+] ".red + "#{prod}".bold.ljust(35," ") + "#{ver.join(" ")}".green
     end
     puts "\n[+] ".red + "Visit: http://support.f5.com/kb/en-us/solutions/public/6000/900/sol6917.html"
 
   else
     puts optparse
     puts "\nExamples:".underline
-    puts "ruby bigip2ip.rb --decimal BIGipServerPool_cla=252029120.10499.0000"
-    puts "ruby bigip2ip.rb --hex BIGipServerpool_SaafFarm_4.17-24=rd4o00000000000000000000ffffc0a80411o80"
+    puts "ruby bigip2ip.rb --decimal BIGipServerPool=252029120.10499.0000"
+    puts "ruby bigip2ip.rb --hex BIGipServerpool=rd4o00000000000000000000ffffc0a80411o80"
+    puts "ruby bigip2ip.rb --list"
 end
 

@@ -1,6 +1,6 @@
 BigipIP
 ========
-Extracts the real IP from F5 cookies
+Extracts the real(Private) IP from F5 cookies
 
 
 How to use?
@@ -8,13 +8,13 @@ How to use?
 When you find HTTP headers contains something like
 
 ```
-BIGipServerpool_SaafFarm_4.17-24=rd4o00000000000000000000ffffc0a80411o80
+BIGipServerpool=rd4o00000000000000000000ffffc0a80411o80
 ```
 
 or
 
 ```
-BIGipServerPool_cla=252029120.10499.0000
+BIGipServerPool=252029120.10499.0000
 ```
 that means the headers have been encoded by F5 encoders.
 
